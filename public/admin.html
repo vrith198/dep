@@ -49,11 +49,11 @@
       <form id="adminLoginForm" class="space-y-4">
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Username</label>
-          <input type="text" id="loginUsername" required value="admin" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800" />
+          <input type="text" id="loginUsername" required placeholder="Enter username (admin)" autocapitalize="none" autocomplete="username" spellcheck="false" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal" />
         </div>
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Password</label>
-          <input type="password" id="loginPassword" required value="sandrush2026!" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800" />
+          <input type="password" id="loginPassword" required placeholder="Enter password" autocomplete="current-password" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800 placeholder:text-slate-400 placeholder:font-normal" />
         </div>
 
         <div id="loginError" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-medium text-rose-700"></div>
