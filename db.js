@@ -1,8 +1,9 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
 const crypto = require('node:crypto');
-
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'camp_sandrush.db');
+const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const defaultDbPath = isServerless ? path.join('/tmp', 'camp_sandrush.db') : path.join(__dirname, 'camp_sandrush.db');
+const DB_PATH = process.env.DB_PATH || defaultDbPath;
 const db = new DatabaseSync(DB_PATH);
 
 // Enable WAL mode & foreign keys

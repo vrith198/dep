@@ -61,8 +61,8 @@ async function runE2ETests() {
 
     // 5. Test Availability Check API
     console.log('Test 5: Checking Availability for Date Range...');
-    const checkIn = '2026-11-13'; // Friday
-    const checkOut = '2026-11-15'; // Sunday
+    const checkIn = '2026-12-11'; // Friday
+    const checkOut = '2026-12-13'; // Sunday
     const availRes = await fetch(`${baseUrl}/api/availability?check_in=${checkIn}&check_out=${checkOut}`);
     assert.strictEqual(availRes.status, 200);
     const availData = await availRes.json();
