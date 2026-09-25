@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camp Sandrush — Coastal Camping & Stargazing Glamping Resort</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            },
+            night: {
+              800: '#0f1d2e',
+              900: '#09131f'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#faf8f5] text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white text-xs font-semibold py-2 px-4 text-center">
+    <span>✨ Autumn & Festive Season Beach Camp is live! Enjoy beachfront barbecues, live acoustic nights & starlit tents.</span>
+    <a href="#specialEventsSection" class="underline ml-2 hover:text-amber-100 font-bold">View Special Events →</a>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center text-white shadow-md shadow-teal-700/20">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <span class="text-2xl font-black tracking-tight text-slate-900 font-heading">CAMP SANDRUSH</span>
+          <span class="block text-[10px] tracking-widest uppercase font-semibold text-teal-700">Beachfront Glamping Resort</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <a href="#accommodationsSection" class="hover:text-teal-700 transition">Accommodations</a>
+        <a href="#packagesSection" class="hover:text-teal-700 transition">Packages</a>
+        <a href="#specialEventsSection" class="hover:text-teal-700 transition flex items-center gap-1.5">
+          <span>Special Events</span>
+          <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">New</span>
+        </a>
+        <a href="#faqSection" class="hover:text-teal-700 transition">Camp Guidelines</a>
+        <a href="/my-booking.html" class="hover:text-teal-700 transition text-slate-700 font-semibold flex items-center gap-1">
+          <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          Find My Booking
+        </a>
+        <a href="/admin" class="hover:text-teal-700 transition text-slate-500 flex items-center gap-1">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          Staff Admin
+        </a>
+      </nav>
+
+      <!-- Mobile Menu Button & CTA -->
+      <div class="flex items-center gap-3">
+        <a href="#bookingSection" class="hidden sm:inline-flex px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold shadow-md shadow-teal-700/20 transition transform active:scale-95">
+          Book Your Stay
+        </a>
+        <button type="button" id="mobileMenuBtn" onclick="toggleMobileNav()" class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none" aria-label="Toggle Navigation">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div id="mobileNavDrawer" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 text-sm font-semibold text-slate-700">
+      <a href="#accommodationsSection" onclick="toggleMobileNav()" class="block py-2 hover:text-teal-700">🏕️ Accommodations</a>
+      <a href="#packagesSection" onclick="toggleMobileNav()" class="block py-2 hover:text-teal-700">🎁 Experience Packages</a>
+      <a href="#specialEventsSection" onclick="toggleMobileNav()" class="block py-2 hover:text-teal-700">⭐ Special Events</a>
+      <a href="#faqSection" onclick="toggleMobileNav()" class="block py-2 hover:text-teal-700">📋 Camp Guidelines</a>
+      <a href="/my-booking.html" class="block py-2 text-teal-800 font-bold">🔍 Find My Booking & Refund</a>
+      <a href="/admin" class="block py-2 text-slate-500 font-bold">🔐 Staff & Admin Console</a>
+      <a href="#bookingSection" onclick="toggleMobileNav()" class="block w-full text-center py-2.5 bg-teal-600 text-white rounded-xl font-bold mt-2">Book Your Stay Now</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative hero-bg text-white py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs font-semibold mb-6">
+        <span class="live-pulse"></span>
+        <span>Unspoiled Golden Beach • Under The Open Galaxy</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight font-heading leading-tight max-w-4xl mx-auto">
+        Escape to Starlit Sands & Coastal Glamping at Camp Sandrush
+      </h1>
+      <p class="mt-6 text-lg sm:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed">
+        Sleep to the rhythmic whispers of ocean waves. Geodesic luxury domes, beachfront tents, sizzling sunset barbecues, and campfire acoustic music.
+      </p>
+
+      <!-- Hero Stay Search Widget -->
+      <div class="mt-12 max-w-4xl mx-auto bg-white rounded-3xl p-4 sm:p-6 shadow-2xl text-slate-800 border border-slate-100 text-left">
+        <!-- Quick Stay Preset Buttons -->
+        <div class="flex flex-wrap items-center gap-2 mb-4 pb-4 border-b border-slate-100">
+          <span class="text-xs uppercase font-bold tracking-wider text-slate-400 mr-2">Stay Presets:</span>
+          <button type="button" id="presetWeekend" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg border border-blue-200 transition">
+            🔥 Weekend Vibe (Fri-Sun)
+          </button>
+          <button type="button" id="presetWeekday" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold rounded-lg border border-emerald-200 transition">
+            🌴 Weekday Calm (Mon-Wed)
+          </button>
+          <a href="#specialEventsSection" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold rounded-lg border border-amber-200 transition flex items-center gap-1">
+            ⭐ Special Events
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Check-in Date</label>
+            <input type="date" id="heroCheckIn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800 bg-slate-50" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Check-out Date</label>
+            <input type="date" id="heroCheckOut" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800 bg-slate-50" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Guests</label>
+            <div class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-800">
+              2 Guests (Customizable)
+            </div>
+          </div>
+          <div>
+            <button type="button" id="heroSearchBtn" class="w-full py-3 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm shadow-lg shadow-teal-700/30 transition flex items-center justify-center gap-2">
+              <span>Check Availability</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECIAL EVENTS SECTION -->
+  <section id="specialEventsSection" class="py-20 bg-amber-50/40 border-b border-amber-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider mb-2">
+            ⭐ Curated Gatherings & Festivals
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">
+            Special Events & Beach Festivals
+          </h2>
+          <p class="text-slate-600 text-base mt-2 max-w-2xl">
+            Join our themed coastal weekends featuring live indie performances, sunset drum circles, telescope astrophotography, and holiday beach parties.
+          </p>
+        </div>
+        <div class="mt-4 md:mt-0 text-sm text-amber-900 font-medium bg-amber-100/70 px-4 py-2 rounded-xl">
+          💡 Clicking "Book This Event" auto-fills festival dates!
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div id="specialEventsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCOMMODATIONS SECTION -->
+  <section id="accommodationsSection" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <span class="text-xs uppercase font-extrabold tracking-widest text-teal-700 block mb-2">Pristine Beach Stays</span>
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">
+        Choose Your Coastal Living
+      </h2>
+      <p class="text-slate-600 text-base mt-3">
+        From authentic beachfront tents directly on the sand to climate-controlled geodesic stargazing domes and teak chalets.
+      </p>
+    </div>
+
+    <!-- Accommodations Grid -->
+    <div id="accommodationsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Rendered dynamically via JS with real-time stock availability -->
+    </div>
+  </section>
+
+  <!-- PACKAGES SECTION -->
+  <section id="packagesSection" class="py-20 bg-slate-50 border-t border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs uppercase font-extrabold tracking-widest text-teal-700 block mb-2">Tailored Experiences</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">
+          Handcrafted Camp Packages
+        </h2>
+        <p class="text-slate-600 text-base mt-3">
+          Elevate your beach stay with curated barbecue feasts, adrenaline watersports, or an intimate seaside candlelit dinner.
+        </p>
+      </div>
+
+      <!-- Packages Grid -->
+      <div id="packagesContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE BOOKING & AVAILABILITY WIZARD SECTION -->
+  <section id="bookingSection" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-10 text-center">
+      <span class="text-xs uppercase font-extrabold tracking-widest text-teal-700 block mb-2">Book Your Getaway</span>
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">
+        Live Availability & Instant Booking
+      </h2>
+      <p class="text-slate-600 text-sm mt-2 max-w-xl mx-auto">
+        Dynamic pricing automatically accounts for weekdays, weekend vibes, and active special events with full itemized transparency.
+      </p>
+    </div>
+
+    <form id="bookingCreationForm" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left Column: Steps -->
+      <div class="lg:col-span-8 space-y-8">
+        
+        <!-- Step 1: Stay Dates & Stay Category Indicator -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center">1</span>
+              <h3 class="text-xl font-bold text-slate-800">Select Stay Dates & Guests</h3>
+            </div>
+            <!-- Quick Presets -->
+            <div class="hidden sm:flex items-center gap-2">
+              <span class="text-xs text-slate-400">Quick set:</span>
+              <button type="button" onclick="document.getElementById('presetWeekend').click()" class="text-xs text-blue-600 hover:underline font-semibold">Weekend</button>
+              <span class="text-slate-300">•</span>
+              <button type="button" onclick="document.getElementById('presetWeekday').click()" class="text-xs text-emerald-600 hover:underline font-semibold">Weekday</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Category Banner -->
+          <div id="stayTypeBanner" class="mb-6">
+            <!-- Rendered by app.js based on selected dates -->
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Check-in</label>
+              <input type="date" id="checkInInput" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Check-out</label>
+              <input type="date" id="checkOutInput" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Adults (12+ yrs)</label>
+              <select id="adultsCount" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800">
+                <option value="1">1 Adult</option>
+                <option value="2" selected>2 Adults</option>
+                <option value="3">3 Adults</option>
+                <option value="4">4 Adults</option>
+                <option value="5">5 Adults</option>
+                <option value="6">6 Adults</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Children (3-11 yrs)</label>
+              <select id="childrenCount" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm font-semibold text-slate-800">
+                <option value="0" selected>0 Children</option>
+                <option value="1">1 Child</option>
+                <option value="2">2 Children</option>
+                <option value="3">3 Children</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Accommodation Selection -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center">2</span>
+              <h3 class="text-xl font-bold text-slate-800">Choose Accommodation</h3>
+            </div>
+            <span class="text-xs text-slate-500 font-medium">Click any stay to select</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-6">Rates below reflect your selected dates. Check real-time inventory indicators for availability.</p>
+
+          <!-- We mirror or link to the accommodations selector -->
+          <div class="text-sm text-teal-800 bg-teal-50/60 p-4 rounded-xl border border-teal-200 flex items-center justify-between">
+            <span>Scroll above or view accommodations cards to switch stay. Current choice updates dynamically.</span>
+            <a href="#accommodationsSection" class="text-xs font-bold text-teal-700 underline">View Full Gallery & Tariffs ↑</a>
+          </div>
+        </div>
+
+        <!-- Step 3: Add-on Experiences -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center">3</span>
+              <h3 class="text-xl font-bold text-slate-800">Customize with Beach Add-ons</h3>
+            </div>
+            <span class="text-xs text-slate-400">Optional</span>
+          </div>
+
+          <div id="addOnsContainer" class="space-y-3">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Step 4: Guest Contact Details -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+            <span class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold text-sm flex items-center justify-center">4</span>
+            <h3 class="text-xl font-bold text-slate-800">Lead Guest & Contact Information</h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Full Name *</label>
+              <input type="text" id="guestName" required placeholder="e.g. Maya Iyer" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm text-slate-800" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Email Address *</label>
+              <input type="email" id="guestEmail" required placeholder="e.g. maya@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm text-slate-800" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Phone Number *</label>
+              <input type="tel" id="guestPhone" required placeholder="e.g. +91 98765 43210" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm text-slate-800" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">City / Origin</label>
+              <input type="text" id="guestCity" placeholder="e.g. Mumbai / Pune" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm text-slate-800" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Special Dietary / Tent Location Requests</label>
+              <textarea id="specialRequests" rows="2" placeholder="e.g. Jain food option, tent closest to sea breeze, celebrating anniversary" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm text-slate-800"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Sticky Order Summary & Booking Confirmation -->
+      <div class="lg:col-span-4 sticky top-28">
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+            <h3 class="text-lg font-bold text-slate-900 font-heading">Reservation Summary</h3>
+            <span class="live-pulse"></span>
+          </div>
+
+          <!-- Dynamic Order Breakdown -->
+          <div id="orderSummaryContainer">
+            <div class="text-center py-8 text-slate-400 text-sm">
+              Calculating real-time rates...
+            </div>
+          </div>
+
+          <!-- Final Submit Button -->
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <button type="submit" id="submitBookingBtn" class="w-full py-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-black text-base shadow-lg shadow-teal-700/25 transition transform active:scale-98 flex items-center justify-center gap-2">
+              <span>Secure & Confirm Booking</span>
+              <span>→</span>
+            </button>
+            <p class="text-[11px] text-slate-400 text-center mt-3">
+              🔒 Instant confirmation. No hidden charges. 100% verified coastal camping.
+            </p>
+          </div>
+        </div>
+
+        <!-- Camp Guarantees Badge -->
+        <div class="mt-4 bg-teal-50/70 border border-teal-200 rounded-2xl p-4 text-xs text-teal-900 space-y-2">
+          <div class="flex items-center gap-2 font-bold">
+            <span>🛡️ Camp Sandrush Hospitality Guarantee</span>
+          </div>
+          <p class="text-slate-600 leading-normal">
+            Clean sanitized washrooms, 24/7 security guard presence, doctor-on-call, and safe family beach surroundings.
+          </p>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <!-- CAMP GUIDELINES & FAQ -->
+  <section id="faqSection" class="py-20 bg-white border-t border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs uppercase font-extrabold tracking-widest text-teal-700 block mb-2">Essential Information</span>
+        <h2 class="text-3xl font-black text-slate-900 font-heading">Camp Guidelines & FAQs</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <h4 class="font-bold text-slate-800 text-base mb-2">⏰ Check-in & Check-out Timings</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Standard check-in begins at <strong>3:00 PM</strong> to allow camp setup and sanitization. Check-out is at <strong>11:00 AM</strong>. Late checkout until 3:00 PM is available under Add-ons.
+          </p>
+        </div>
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <h4 class="font-bold text-slate-800 text-base mb-2">🌊 What is Included in the Stay?</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Every stay includes accommodation bedding, welcome coconut drink, evening tea with snacks, buffet breakfast, community campfire with music, and beach sports gear.
+          </p>
+        </div>
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <h4 class="font-bold text-slate-800 text-base mb-2">🎒 What Should Guests Carry?</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Light cotton beach clothing, swimwear, comfortable sandals/flip-flops, sunscreen, sunglasses, personal toiletries, and a government photo ID for check-in verification.
+          </p>
+        </div>
+        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+          <h4 class="font-bold text-slate-800 text-base mb-2">🎸 Weekday vs Weekend vs Events</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            <strong>Weekdays (Mon-Thu)</strong> offer peaceful, uncrowded coastlines at attractive rates. <strong>Weekends (Fri-Sun)</strong> feature vibrant acoustic jams and barbecues. <strong>Special Events</strong> host full festivals, DJs, and themed culinary spreads!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto bg-night-900 text-slate-300 py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <span class="text-xl font-black text-white font-heading tracking-tight">CAMP SANDRUSH</span>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          The ultimate seaside camping and glamping sanctuary on the golden coastline. Stargazing, sound of waves, and unforgettable memories.
+        </p>
+      </div>
+      <div>
+        <h5 class="text-xs uppercase font-bold text-white tracking-wider mb-3">Quick Navigation</h5>
+        <ul class="text-xs space-y-2 text-slate-400">
+          <li><a href="#accommodationsSection" class="hover:text-teal-400">Accommodations</a></li>
+          <li><a href="#packagesSection" class="hover:text-teal-400">Experience Packages</a></li>
+          <li><a href="#specialEventsSection" class="hover:text-teal-400">Special Events</a></li>
+          <li><a href="/my-booking.html" class="hover:text-teal-400 font-semibold text-teal-300">Find My Booking</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="text-xs uppercase font-bold text-white tracking-wider mb-3">Camp Location</h5>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Camp Sandrush Beachfront Grounds,<br>
+          Silver Sands Coastal Highway,<br>
+          Near Lighthouse Beach Point<br>
+          Check-in Desk: +91 98765 00123
+        </p>
+      </div>
+      <div>
+        <h5 class="text-xs uppercase font-bold text-white tracking-wider mb-3">Customer Support</h5>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Questions or custom corporate/group requests? Email us at:
+          <span class="text-teal-400 block font-medium mt-1">reservations@campsandrush.com</span>
+        </p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+      © 2026 Camp Sandrush Luxury Coastal Camping. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- DEMO PAYMENT MODAL -->
+  <div id="demoPaymentModal" class="fixed inset-0 z-50 bg-night-900/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 relative">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 border border-teal-200 flex items-center justify-center font-bold text-lg">
+            🔒
+          </div>
+          <div>
+            <h3 class="text-xl font-black font-heading text-slate-900">Secure Payment Checkout</h3>
+            <span class="text-[11px] text-teal-700 font-semibold">256-Bit Encrypted Demo Gateway</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeDemoPaymentModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">✕</button>
+      </div>
+
+      <!-- Payment Summary -->
+      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-6">
+        <div class="flex justify-between items-center text-xs text-slate-500 mb-1">
+          <span>Total Amount to Pay</span>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">All-Inclusive</span>
+        </div>
+        <div id="modalPayAmount" class="text-3xl font-black text-slate-900 font-heading">₹0</div>
+        <div id="modalPayStayInfo" class="text-xs text-slate-600 mt-1">-</div>
+      </div>
+
+      <!-- Payment Method Radios -->
+      <div class="space-y-3 mb-6">
+        <span class="block text-xs font-bold uppercase tracking-wider text-slate-400">Select Demo Payment Method:</span>
+
+        <label class="payment-method-card flex items-center justify-between p-3.5 rounded-xl border border-teal-500 bg-teal-50/50 cursor-pointer transition">
+          <div class="flex items-center gap-3">
+            <input type="radio" name="demoPaymentMethod" value="DEMO_UPI" checked class="text-teal-600 focus:ring-teal-500" />
+            <div>
+              <span class="text-xs font-bold text-slate-900 block">⚡ Instant UPI (Google Pay, PhonePe, Paytm)</span>
+              <span class="text-[11px] text-slate-500">Zero surcharge • Instant verification</span>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-teal-700">Recommended</span>
+        </label>
+
+        <label class="payment-method-card flex items-center justify-between p-3.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white cursor-pointer transition">
+          <div class="flex items-center gap-3">
+            <input type="radio" name="demoPaymentMethod" value="DEMO_CARD" class="text-teal-600 focus:ring-teal-500" />
+            <div>
+              <span class="text-xs font-bold text-slate-900 block">💳 Credit / Debit Card (Visa, MasterCard, RuPay)</span>
+              <span class="text-[11px] text-slate-500">Simulated 3D Secure verification</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="payment-method-card flex items-center justify-between p-3.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white cursor-pointer transition">
+          <div class="flex items-center gap-3">
+            <input type="radio" name="demoPaymentMethod" value="PAY_AT_CAMP" class="text-teal-600 focus:ring-teal-500" />
+            <div>
+              <span class="text-xs font-bold text-slate-900 block">🏕️ Pay Advance Deposit (30% Online, Balance at Check-in)</span>
+              <span class="text-[11px] text-slate-500">Pay deposit now, remainder when you arrive</span>
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <!-- Cancellation Policy Guarantee Notice -->
+      <div class="p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl text-xs text-amber-900 mb-6 space-y-1">
+        <div class="flex items-center gap-1.5 font-bold">
+          <span>🛡️ Transparent Cancellation & Refund Policy:</span>
+        </div>
+        <p class="text-[11px] text-slate-600 leading-relaxed">
+          • <strong>100% Full Refund:</strong> Cancel 7+ days before check-in.<br>
+          • <strong>50% Refund:</strong> Cancel between 3 to 7 days before check-in.<br>
+          • <strong>Non-Refundable:</strong> Cancellations made under 72 hours prior to check-in.
+        </p>
+      </div>
+
+      <!-- Action -->
+      <button type="button" id="confirmPaymentBtn" onclick="executeSimulatedPayment()" class="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-black text-sm rounded-xl shadow-lg shadow-teal-700/25 transition flex items-center justify-center gap-2">
+        <span>Approve Demo Payment & Complete Booking</span>
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ACCOMMODATION DETAILS MODAL -->
+  <div id="accModal" class="fixed inset-0 z-50 bg-night-900/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div id="accModalContent" class="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100">
+      <!-- Injected by app.js -->
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

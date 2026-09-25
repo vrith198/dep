@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Binaries & Executables
+cloudflared.exe
+*.exe
+
+# Database files & locks (auto-generated on startup by db.js)
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Logs & temporary files
+*.log
+public_url.txt
+tunnel.log
+
+# OS & Editor files
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/

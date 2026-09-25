@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage My Booking & Cancellation — Camp Sandrush</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            },
+            night: {
+              800: '#0f1d2e',
+              900: '#09131f'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#faf8f5] text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white shadow-md">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <span class="text-xl font-black text-slate-900 font-heading">CAMP SANDRUSH</span>
+          <span class="block text-[10px] tracking-widest uppercase font-semibold text-teal-700">Self-Service Guest Portal</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <a href="/" class="text-slate-600 hover:text-teal-700 transition">Home</a>
+        <a href="/#stays" class="text-slate-600 hover:text-teal-700 transition">Accommodations</a>
+        <a href="/#packages" class="text-slate-600 hover:text-teal-700 transition">Packages</a>
+        <a href="/#events" class="text-slate-600 hover:text-teal-700 transition">Events</a>
+        <a href="/my-booking.html" class="text-teal-700 font-bold border-b-2 border-teal-600 pb-0.5">Manage Booking</a>
+        <a href="/admin.html" class="px-3.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-700 hover:border-teal-600 hover:text-teal-700 transition">Staff Portal</a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleMobileNav()" class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none" aria-label="Toggle Navigation">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileNavDrawer" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 text-sm font-semibold">
+      <a href="/" class="block py-2 text-slate-700 hover:text-teal-700">Home</a>
+      <a href="/#stays" class="block py-2 text-slate-700 hover:text-teal-700">Accommodations</a>
+      <a href="/#packages" class="block py-2 text-slate-700 hover:text-teal-700">Packages</a>
+      <a href="/#events" class="block py-2 text-slate-700 hover:text-teal-700">Special Events</a>
+      <a href="/my-booking.html" class="block py-2 text-teal-700 font-bold">Manage Booking</a>
+      <a href="/admin.html" class="block py-2 text-slate-500 hover:text-slate-800">Staff Portal</a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 py-10 w-full space-y-8">
+    
+    <!-- Hero Header -->
+    <div class="text-center max-w-2xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold border border-teal-200 mb-3">
+        <span>🔍 Booking Lookup & Self-Service</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 tracking-tight">Find Your Reservation</h1>
+      <p class="text-slate-600 text-sm mt-2">
+        View your stay itinerary, download printable tax vouchers, review cancellation refund rules, or cancel your booking with instant inventory restoration.
+      </p>
+    </div>
+
+    <!-- Search / Lookup Bar -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200">
+      <form id="lookupForm" class="flex flex-col sm:flex-row items-center gap-3">
+        <div class="relative flex-1 w-full">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 font-mono text-sm font-bold">
+            #
+          </div>
+          <input type="text" id="lookupRefInput" required placeholder="Enter Booking Reference (e.g. CSR-2026-XXXXX)"
+            class="w-full pl-9 pr-4 py-3.5 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:outline-none text-base uppercase font-mono tracking-wider font-bold text-slate-800 placeholder:normal-case placeholder:font-sans placeholder:font-normal" />
+        </div>
+        <button type="submit" id="lookupBtn" class="w-full sm:w-auto px-8 py-3.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-2xl shadow-md shadow-teal-700/20 transition flex items-center justify-center gap-2 whitespace-nowrap">
+          <span>Search Reservation</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div id="lookupMsg" class="hidden mt-4 p-4 rounded-xl text-xs font-medium"></div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="bookingLoading" class="hidden text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-teal-600 border-t-transparent mb-3"></div>
+      <p class="text-slate-600 font-semibold text-sm">Searching reservation records...</p>
+    </div>
+
+    <!-- Booking Details Card (Hidden initially) -->
+    <div id="bookingResultCard" class="hidden bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+      
+      <!-- Card Header Banner -->
+      <div id="cardHeaderBanner" class="p-6 sm:p-8 bg-gradient-to-r from-teal-700 to-slate-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span id="bookingStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 uppercase">
+              CONFIRMED
+            </span>
+            <span id="paymentStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-400/20 text-teal-200 border border-teal-300/30">
+              PAID ONLINE
+            </span>
+          </div>
+          <h2 class="text-2xl font-black font-heading tracking-tight" id="accTitleDisplay">Beachfront Wooden Cottage</h2>
+          <p class="text-teal-100 text-xs mt-1" id="packageTitleDisplay">Campfire & BBQ Package</p>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 sm:text-right">
+          <span class="block text-[10px] uppercase font-bold tracking-wider text-teal-200">Reference Number</span>
+          <span id="bookingRefDisplay" class="text-xl font-mono font-black text-amber-300 tracking-wider">CSR-2026-XXXXX</span>
+          <span class="block text-[10px] text-teal-200 mt-0.5">Keep handy for check-in</span>
+        </div>
+      </div>
+
+      <!-- Cancellation Info Box (Shows if CANCELLED) -->
+      <div id="cancellationNoticeBox" class="hidden bg-rose-50 border-b border-rose-200 p-6 sm:p-8">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-lg flex-shrink-0">
+            ✕
+          </div>
+          <div class="space-y-2 text-xs text-rose-900 flex-1">
+            <h3 class="text-sm font-bold text-rose-900">This Reservation Was Cancelled</h3>
+            <p>The reserved unit has been released back to public camp inventory.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-rose-800">
+              <div class="p-3 bg-white/70 rounded-xl border border-rose-200">
+                <span class="block text-[10px] uppercase font-bold text-rose-500">Refund Percentage</span>
+                <span id="noticeRefundPct" class="text-base font-black text-rose-900">0%</span>
+              </div>
+              <div class="p-3 bg-white/70 rounded-xl border border-rose-200">
+                <span class="block text-[10px] uppercase font-bold text-rose-500">Refund Amount</span>
+                <span id="noticeRefundAmount" class="text-base font-black text-rose-900">₹0</span>
+              </div>
+              <div class="p-3 bg-white/70 rounded-xl border border-rose-200">
+                <span class="block text-[10px] uppercase font-bold text-rose-500">Refund Payout Status</span>
+                <span id="noticeRefundStatus" class="text-xs font-bold px-2 py-0.5 rounded-full inline-block mt-1 bg-amber-100 text-amber-900">PENDING_REFUND</span>
+              </div>
+            </div>
+            <div id="noticeReasonRow" class="pt-2 text-[11px] text-rose-700">
+              <strong>Cancellation Reason:</strong> <span id="noticeReasonText">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stay Overview Grid -->
+      <div class="p-6 sm:p-8 space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Guest Details -->
+          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 text-xs space-y-2">
+            <span class="block uppercase font-bold text-slate-400 text-[10px] tracking-wider mb-1">Lead Guest Info</span>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Full Name:</span>
+              <strong id="bGuestName" class="text-slate-900">-</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Email Address:</span>
+              <strong id="bGuestEmail" class="text-slate-900">-</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Phone Contact:</span>
+              <strong id="bGuestPhone" class="text-slate-900">-</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Origin City:</span>
+              <span id="bGuestCity" class="font-medium text-slate-700">-</span>
+            </div>
+          </div>
+
+          <!-- Dates & Party -->
+          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 text-xs space-y-2">
+            <span class="block uppercase font-bold text-slate-400 text-[10px] tracking-wider mb-1">Schedule & Guests</span>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Check-in:</span>
+              <strong id="bCheckIn" class="text-slate-900">- (3:00 PM)</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Check-out:</span>
+              <strong id="bCheckOut" class="text-slate-900">- (11:00 AM)</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Total Nights:</span>
+              <strong id="bNights" class="text-teal-800">-</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Guest Count:</span>
+              <strong id="bGuests" class="text-slate-900">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment & Financial Card -->
+        <div class="p-5 rounded-2xl bg-teal-50/50 border border-teal-200/70 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs">
+          <div>
+            <span class="block uppercase font-bold text-teal-800 text-[10px] tracking-wider mb-1">Payment & Billing</span>
+            <div class="text-slate-700 space-y-0.5">
+              <div>Method: <strong id="bPayMethod" class="text-slate-900">Demo UPI</strong></div>
+              <div>Transaction ID: <span id="bTxnId" class="font-mono text-slate-600 font-semibold">TXN-000000</span></div>
+              <div>Taxes (GST 12%): <span id="bTax" class="font-semibold text-slate-800">₹0</span></div>
+            </div>
+          </div>
+
+          <div class="text-right sm:border-l sm:border-teal-200 sm:pl-6">
+            <span class="block text-[10px] uppercase font-bold text-slate-500">Total Tariff Paid</span>
+            <span id="bTotalPaid" class="text-2xl font-black text-teal-800 font-heading">₹0</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+          <a id="btnViewVoucher" href="#" target="_blank" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            <span>Open Official Tax Voucher</span>
+            <span>↗</span>
+          </a>
+
+          <div id="activeBookingActions" class="flex items-center gap-3">
+            <button type="button" onclick="openCancellationModal()" class="px-5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              <span>Cancel Stay & Calculate Refund</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Cancellation & Refund Policy Information Banner -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+      <h3 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
+        <span>📋</span>
+        <span>Camp Sandrush Cancellation & Refund Policy</span>
+      </h3>
+      <p class="text-xs text-slate-500 mb-6">Transparent, fair, and automated refunds computed based on time of cancellation prior to check-in:</p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold text-emerald-900">Tier 1: Early Notice</span>
+            <span class="text-emerald-700 font-extrabold text-sm">100% Refund</span>
+          </div>
+          <p class="text-slate-600">Cancellations made <strong>more than 7 days</strong> before scheduled 3:00 PM check-in qualify for a full 100% refund with zero deduction.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold text-amber-900">Tier 2: Standard Notice</span>
+            <span class="text-amber-700 font-extrabold text-sm">50% Refund</span>
+          </div>
+          <p class="text-slate-600">Cancellations between <strong>3 to 7 days (72h - 168h)</strong> before check-in receive a 50% refund, covering partial provisioning costs.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200/80">
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold text-rose-900">Tier 3: Short Notice</span>
+            <span class="text-rose-700 font-extrabold text-sm">0% Refund</span>
+          </div>
+          <p class="text-slate-600">Cancellations within <strong>less than 72 hours</strong> or no-shows are strictly non-refundable due to reserved camp unit holding.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- CANCELLATION & REFUND CONFIRMATION MODAL -->
+  <!-- ========================================== -->
+  <div id="cancellationModal" class="fixed inset-0 z-50 bg-night-900/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100 p-6 sm:p-8">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-rose-600">Cancellation Review</span>
+          <h3 class="text-xl font-black font-heading text-slate-900">Cancel Your Reservation</h3>
+        </div>
+        <button onclick="closeCancellationModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="cancelPreviewLoading" class="py-8 text-center text-xs text-slate-500">
+        <div class="inline-block animate-spin rounded-full h-6 w-6 border-2 border-teal-600 border-t-transparent mb-2"></div>
+        <p>Evaluating refund tier and policies...</p>
+      </div>
+
+      <!-- Preview Content -->
+      <div id="cancelPreviewContent" class="hidden space-y-5 text-xs text-slate-700">
+        
+        <!-- Live Policy Evaluation Badge -->
+        <div id="policyEvaluationBox" class="p-4 rounded-2xl border text-xs">
+          <div class="flex items-center justify-between font-bold mb-1">
+            <span id="previewPolicyTier" class="text-sm">Tier Assessment</span>
+            <span id="previewRefundPctBadge" class="text-sm px-2.5 py-0.5 rounded-full font-black">100% Refund</span>
+          </div>
+          <p id="previewPolicyDesc" class="text-slate-600 text-[11px]"></p>
+          <div class="mt-2 text-[11px] text-slate-500">
+            Hours until check-in: <strong id="previewHoursRemain" class="text-slate-800">0</strong> hrs
+          </div>
+        </div>
+
+        <!-- Financial Breakdown -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2">
+          <div class="flex justify-between">
+            <span class="text-slate-500">Original Total Amount Paid:</span>
+            <strong id="previewOrigTotal" class="text-slate-900">₹0</strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">Cancellation Fee / Deduction:</span>
+            <strong id="previewDeduction" class="text-rose-600">₹0</strong>
+          </div>
+          <div class="flex justify-between pt-2 border-t border-slate-200 text-sm font-bold">
+            <span class="text-slate-900">Eligible Refund Amount:</span>
+            <span id="previewRefundAmt" class="text-emerald-700 font-black">₹0</span>
+          </div>
+        </div>
+
+        <!-- Reason Input -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Reason for Cancellation (Optional)</label>
+          <textarea id="cancelReasonInput" rows="2" placeholder="e.g. Change of travel schedule, emergency, bad weather..." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-rose-500 focus:outline-none"></textarea>
+        </div>
+
+        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-[11px]">
+          ⚠️ <strong>Immediate Inventory Release:</strong> Confirming cancellation will instantly release this unit back into Camp Sandrush public availability for other guests.
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeCancellationModal()" class="px-4 py-2.5 text-slate-600 font-semibold hover:text-slate-900 text-xs">
+            Keep Reservation
+          </button>
+          <button type="button" id="btnExecuteCancel" onclick="executeCancellation()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-md shadow-rose-600/20 transition flex items-center gap-1.5">
+            <span>Confirm & Cancel Booking</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="mt-auto bg-night-900 text-slate-400 py-8 text-center text-xs">
+    <div class="max-w-5xl mx-auto px-4 space-y-2">
+      <div class="flex justify-center items-center gap-4 text-slate-300 font-medium">
+        <a href="/" class="hover:text-white">Home</a>
+        <span>•</span>
+        <a href="/my-booking.html" class="hover:text-white">Lookup Booking</a>
+        <span>•</span>
+        <a href="/admin.html" class="hover:text-white">Admin Console</a>
+      </div>
+      <p>© 2026 Camp Sandrush Luxury Coastal Camping & Glamping Resort. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    let currentBooking = null;
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      }).format(amount || 0);
+    }
+
+    function formatDisplayDate(dateStr) {
+      if (!dateStr) return '';
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      return dt.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function toggleMobileNav() {
+      const drawer = document.getElementById('mobileNavDrawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+      if (ref) {
+        document.getElementById('lookupRefInput').value = ref.trim().toUpperCase();
+        fetchBookingDetails(ref.trim().toUpperCase());
+      }
+    });
+
+    document.getElementById('lookupForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const ref = document.getElementById('lookupRefInput').value.trim().toUpperCase();
+      if (!ref) return;
+      // Update URL without page reload
+      window.history.replaceState({}, '', `/my-booking.html?ref=${encodeURIComponent(ref)}`);
+      fetchBookingDetails(ref);
+    });
+
+    async function fetchBookingDetails(ref) {
+      const loader = document.getElementById('bookingLoading');
+      const card = document.getElementById('bookingResultCard');
+      const msg = document.getElementById('lookupMsg');
+      const btn = document.getElementById('lookupBtn');
+
+      loader.classList.remove('hidden');
+      card.classList.add('hidden');
+      msg.classList.add('hidden');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`/api/bookings/${encodeURIComponent(ref)}`);
+        const json = await res.json();
+
+        if (json.success && json.data) {
+          currentBooking = json.data;
+          renderBookingCard(currentBooking);
+        } else {
+          currentBooking = null;
+          msg.className = 'mt-4 p-4 rounded-xl text-xs bg-rose-50 text-rose-800 border border-rose-200';
+          msg.textContent = json.error || 'No reservation found for reference: ' + ref;
+          msg.classList.remove('hidden');
+        }
+      } catch (err) {
+        msg.className = 'mt-4 p-4 rounded-xl text-xs bg-rose-50 text-rose-800 border border-rose-200';
+        msg.textContent = 'Network error fetching booking. Please check connection and try again.';
+        msg.classList.remove('hidden');
+      } finally {
+        loader.classList.add('hidden');
+        btn.disabled = false;
+      }
+    }
+
+    function renderBookingCard(b) {
+      const card = document.getElementById('bookingResultCard');
+      card.classList.remove('hidden');
+
+      document.getElementById('accTitleDisplay').textContent = b.accommodation_name;
+      document.getElementById('packageTitleDisplay').textContent = `${b.package_name} • ${b.stay_type_summary}`;
+      document.getElementById('bookingRefDisplay').textContent = b.booking_reference;
+
+      // Badges
+      const statusBadge = document.getElementById('bookingStatusBadge');
+      statusBadge.textContent = b.booking_status;
+      if (b.booking_status === 'CONFIRMED') {
+        statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 uppercase';
+      } else if (b.booking_status === 'CANCELLED') {
+        statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30 uppercase';
+      } else {
+        statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30 uppercase';
+      }
+
+      document.getElementById('paymentStatusBadge').textContent = `PAID (${b.payment_method || 'ONLINE'})`;
+
+      // Guest & stay details
+      document.getElementById('bGuestName').textContent = b.customer_name;
+      document.getElementById('bGuestEmail').textContent = b.customer_email;
+      document.getElementById('bGuestPhone').textContent = b.customer_phone;
+      document.getElementById('bGuestCity').textContent = b.customer_city || 'Not specified';
+
+      document.getElementById('bCheckIn').textContent = `${formatDisplayDate(b.check_in_date)} (3:00 PM)`;
+      document.getElementById('bCheckOut').textContent = `${formatDisplayDate(b.check_out_date)} (11:00 AM)`;
+      document.getElementById('bNights').textContent = `${b.total_nights} Night${b.total_nights > 1 ? 's' : ''}`;
+      document.getElementById('bGuests').textContent = `${b.num_adults} Adults${b.num_children ? `, ${b.num_children} Children` : ''}`;
+
+      // Payment
+      document.getElementById('bPayMethod').textContent = b.payment_method || 'Online Payment';
+      document.getElementById('bTxnId').textContent = b.transaction_id || 'TXN-ONLINE';
+      document.getElementById('bTax').textContent = formatCurrency(b.tax_amount);
+      document.getElementById('bTotalPaid').textContent = formatCurrency(b.total_amount);
+
+      // Voucher link
+      document.getElementById('btnViewVoucher').href = `/confirmation.html?ref=${encodeURIComponent(b.booking_reference)}`;
+
+      // Cancellation state
+      const cancelBox = document.getElementById('cancellationNoticeBox');
+      const actionsDiv = document.getElementById('activeBookingActions');
+
+      if (b.booking_status === 'CANCELLED') {
+        cancelBox.classList.remove('hidden');
+        actionsDiv.classList.add('hidden');
+        document.getElementById('noticeRefundPct').textContent = `${b.refund_percentage || 0}%`;
+        document.getElementById('noticeRefundAmount').textContent = formatCurrency(b.refund_amount || 0);
+        document.getElementById('noticeRefundStatus').textContent = b.refund_status || 'NOT_APPLICABLE';
+        document.getElementById('noticeReasonText').textContent = b.cancellation_reason || 'Guest requested cancellation';
+      } else {
+        cancelBox.classList.add('hidden');
+        actionsDiv.classList.remove('hidden');
+      }
+    }
+
+    async function openCancellationModal() {
+      if (!currentBooking) return;
+      const modal = document.getElementById('cancellationModal');
+      const loader = document.getElementById('cancelPreviewLoading');
+      const content = document.getElementById('cancelPreviewContent');
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      loader.classList.remove('hidden');
+      content.classList.add('hidden');
+
+      try {
+        const res = await fetch(`/api/bookings/${encodeURIComponent(currentBooking.booking_reference)}/cancellation-preview`);
+        const json = await res.json();
+
+        if (json.success && json.data) {
+          const p = json.data;
+          document.getElementById('previewHoursRemain').textContent = p.hoursUntilCheckIn;
+          document.getElementById('previewPolicyTier').textContent = p.ruleDescription;
+          document.getElementById('previewRefundPctBadge').textContent = `${p.refundPercentage}% Refund`;
+          document.getElementById('previewPolicyDesc').textContent = p.applicablePolicy;
+
+          const box = document.getElementById('policyEvaluationBox');
+          const badge = document.getElementById('previewRefundPctBadge');
+          if (p.refundPercentage === 100) {
+            box.className = 'p-4 rounded-2xl border text-xs bg-emerald-50 border-emerald-200 text-emerald-900';
+            badge.className = 'text-sm px-2.5 py-0.5 rounded-full font-black bg-emerald-200 text-emerald-950';
+          } else if (p.refundPercentage > 0) {
+            box.className = 'p-4 rounded-2xl border text-xs bg-amber-50 border-amber-200 text-amber-900';
+            badge.className = 'text-sm px-2.5 py-0.5 rounded-full font-black bg-amber-200 text-amber-950';
+          } else {
+            box.className = 'p-4 rounded-2xl border text-xs bg-rose-50 border-rose-200 text-rose-900';
+            badge.className = 'text-sm px-2.5 py-0.5 rounded-full font-black bg-rose-200 text-rose-950';
+          }
+
+          document.getElementById('previewOrigTotal').textContent = formatCurrency(p.totalAmount);
+          document.getElementById('previewDeduction').textContent = formatCurrency(p.totalAmount - p.refundAmount);
+          document.getElementById('previewRefundAmt').textContent = formatCurrency(p.refundAmount);
+
+          loader.classList.add('hidden');
+          content.classList.remove('hidden');
+        } else {
+          alert(json.error || 'Failed to fetch refund preview');
+          closeCancellationModal();
+        }
+      } catch (err) {
+        alert('Network error calculating cancellation rules');
+        closeCancellationModal();
+      }
+    }
+
+    function closeCancellationModal() {
+      const modal = document.getElementById('cancellationModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function executeCancellation() {
+      if (!currentBooking) return;
+      const btn = document.getElementById('btnExecuteCancel');
+      const reason = document.getElementById('cancelReasonInput').value.trim();
+
+      btn.disabled = true;
+      btn.innerHTML = 'Cancelling stay...';
+
+      try {
+        const res = await fetch(`/api/bookings/${encodeURIComponent(currentBooking.booking_reference)}/cancel`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reason })
+        });
+        const json = await res.json();
+
+        if (json.success && json.data) {
+          alert('Reservation has been cancelled. Accommodation released back to camp availability.');
+          closeCancellationModal();
+          fetchBookingDetails(currentBooking.booking_reference);
+        } else {
+          alert(json.error || 'Cancellation failed.');
+        }
+      } catch (err) {
+        alert('Error communicating with cancellation service.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Confirm & Cancel Booking</span>';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation Voucher — Camp Sandrush</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+            },
+            night: {
+              800: '#0f1d2e',
+              900: '#09131f'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#faf8f5] text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="bg-white border-b border-slate-200 no-print">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white shadow-md">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <span class="text-xl font-black text-slate-900 font-heading">CAMP SANDRUSH</span>
+          <span class="block text-[10px] tracking-widest uppercase font-semibold text-teal-700">Official Stay Voucher</span>
+        </div>
+      </a>
+      <div class="flex items-center gap-4 text-xs font-bold">
+        <a id="navManageLink" href="/my-booking.html" class="text-slate-600 hover:text-teal-700">Manage Booking</a>
+        <a href="/" class="text-teal-700 hover:text-teal-800">← Back to Camp Website</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 py-10 w-full">
+    <!-- Loading State -->
+    <div id="loadingState" class="text-center py-20">
+      <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-teal-600 border-t-transparent mb-4"></div>
+      <p class="text-slate-600 font-semibold">Retrieving your confirmed reservation...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorState" class="hidden bg-rose-50 border border-rose-200 rounded-2xl p-8 text-center my-10">
+      <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl">✕</div>
+      <h3 class="text-xl font-bold text-rose-900 mb-2">Reservation Not Found</h3>
+      <p id="errorMessage" class="text-sm text-rose-700 max-w-md mx-auto mb-6">We could not locate this booking reference. Please check the code or contact camp reception.</p>
+      <div class="flex items-center justify-center gap-3">
+        <a href="/my-booking.html" class="px-5 py-2.5 bg-slate-200 text-slate-800 rounded-xl text-xs font-bold hover:bg-slate-300">Search By Reference</a>
+        <a href="/" class="px-5 py-2.5 bg-teal-600 text-white rounded-xl text-xs font-bold shadow-md hover:bg-teal-700">Return to Home</a>
+      </div>
+    </div>
+
+    <!-- Voucher Container -->
+    <div id="voucherContent" class="hidden voucher-container bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+      
+      <!-- Top Success / Status Banner -->
+      <div id="topBanner" class="bg-gradient-to-r from-teal-700 via-teal-800 to-slate-900 text-white p-8 sm:p-10 relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative z-10">
+          <div>
+            <div id="bannerStatusPill" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30 mb-3">
+              <span id="bannerStatusDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span id="bannerStatusText">BOOKING CONFIRMED & RESERVED</span>
+            </div>
+            <h1 id="bannerTitle" class="text-2xl sm:text-3xl font-black font-heading tracking-tight">Your Beach Getaway is Booked!</h1>
+            <p id="bannerSubtitle" class="text-teal-100 text-sm mt-1">Pack your flip-flops! We are thrilled to welcome you to Camp Sandrush.</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 text-center sm:text-right">
+            <span class="block text-[11px] uppercase tracking-wider text-teal-200 font-semibold">Booking Reference</span>
+            <span id="bookingRefBadge" class="text-xl sm:text-2xl font-black tracking-widest text-amber-300 font-mono">CSR-2026-XXXXX</span>
+            <span class="block text-[10px] text-teal-200 mt-0.5">Keep this ID for check-in</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Bar (Print / Share / Manage) -->
+      <div class="bg-slate-50 border-b border-slate-200 px-8 py-3.5 flex flex-wrap items-center justify-between gap-4 no-print">
+        <span class="text-xs text-slate-500 font-medium">A copy of this confirmation has been sent to your registered email.</span>
+        <div class="flex items-center gap-3">
+          <button onclick="window.print()" class="px-4 py-2 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            Print / Save PDF Voucher
+          </button>
+          <a id="barManageLink" href="/my-booking.html" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold rounded-xl transition">
+            Manage / Cancel Stay
+          </a>
+          <a href="/" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-sm transition">
+            Book Another Stay
+          </a>
+        </div>
+      </div>
+
+      <!-- Cancelled Details Alert (Hidden if confirmed) -->
+      <div id="vCancelledNotice" class="hidden p-6 bg-rose-50 border-b border-rose-200 text-xs text-rose-900 space-y-2">
+        <div class="flex items-center gap-2 font-bold text-sm text-rose-900">
+          <span>⚠️</span>
+          <span>Reservation Cancelled by Guest</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+          <div class="bg-white/80 p-3 rounded-xl border border-rose-200">
+            <span class="block text-[10px] uppercase font-bold text-rose-500">Refund Payout</span>
+            <span id="vRefundAmtDisplay" class="text-base font-black text-rose-900">₹0</span>
+            <span id="vRefundPctDisplay" class="text-[10px] text-rose-700 block">(0% refund applied)</span>
+          </div>
+          <div class="bg-white/80 p-3 rounded-xl border border-rose-200">
+            <span class="block text-[10px] uppercase font-bold text-rose-500">Payout Status</span>
+            <span id="vRefundStatusDisplay" class="font-bold text-amber-800 mt-1 inline-block">PENDING_REFUND</span>
+          </div>
+          <div class="bg-white/80 p-3 rounded-xl border border-rose-200">
+            <span class="block text-[10px] uppercase font-bold text-rose-500">Inventory Status</span>
+            <span class="font-bold text-emerald-800 mt-1 inline-block">Unit Released to Camp</span>
+          </div>
+        </div>
+        <p id="vCancelReasonDisplay" class="pt-1 text-slate-600 italic">Reason: -</p>
+      </div>
+
+      <!-- Voucher Body -->
+      <div class="p-8 sm:p-10 space-y-8">
+
+        <!-- 1. Guest & Stay Overview Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8 border-b border-slate-200">
+          <div>
+            <h4 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3">Lead Guest Details</h4>
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Name:</span>
+                <span id="vGuestName" class="font-bold text-slate-900">-</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Email:</span>
+                <span id="vGuestEmail" class="font-semibold text-slate-900">-</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Phone:</span>
+                <span id="vGuestPhone" class="font-semibold text-slate-900">-</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">City / Origin:</span>
+                <span id="vGuestCity" class="font-medium text-slate-700">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3">Stay Timings & Capacity</h4>
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Check-in:</span>
+                <span class="font-bold text-slate-900"><span id="vCheckInDate">-</span> (3:00 PM)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Check-out:</span>
+                <span class="font-bold text-slate-900"><span id="vCheckOutDate">-</span> (11:00 AM)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Duration:</span>
+                <span id="vTotalNights" class="font-semibold text-teal-800">-</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Guests:</span>
+                <span id="vGuestsCount" class="font-semibold text-slate-900">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Accommodation & Package Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-8 border-b border-slate-200">
+          <div>
+            <h4 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3">Reserved Stay</h4>
+            <div class="p-4 bg-teal-50/50 rounded-2xl border border-teal-200/70">
+              <h5 id="vAccName" class="text-lg font-bold text-slate-900">-</h5>
+              <div id="vStayType" class="inline-block text-[11px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 mt-1 mb-2">Category</div>
+              <p class="text-xs text-slate-600">Includes bedding, welcome coconut, breakfast buffet, campfire and sports access.</p>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3">Experience Package</h4>
+            <div class="p-4 bg-amber-50/50 rounded-2xl border border-amber-200/70">
+              <h5 id="vPkgName" class="text-lg font-bold text-slate-900">-</h5>
+              <span id="vPkgBadge" class="inline-block text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 mt-1 mb-2">Selected Package</span>
+              <p class="text-xs text-slate-600">All inclusions and access passes are confirmed for your reservation party.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Night-by-night itemized invoice table -->
+        <div class="pb-8 border-b border-slate-200">
+          <h4 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3">Itemized Stay Tariffs</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-100 font-bold text-slate-800 uppercase tracking-wider">
+                <tr>
+                  <th class="p-3 rounded-l-lg">Night / Date</th>
+                  <th class="p-3">Tariff Category</th>
+                  <th class="p-3">Details</th>
+                  <th class="p-3 text-right rounded-r-lg">Rate</th>
+                </tr>
+              </thead>
+              <tbody id="vNightRows" class="divide-y divide-slate-100">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 4. Add-ons if any -->
+        <div id="vAddonsSection" class="hidden pb-8 border-b border-slate-200">
+          <h4 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3">Confirmed Add-ons & Activities</h4>
+          <div id="vAddonsList" class="space-y-2">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- 5. Special Requests if provided -->
+        <div id="vSpecialReqSection" class="hidden pb-8 border-b border-slate-200">
+          <h4 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-2">Guest Special Requests</h4>
+          <p id="vSpecialRequests" class="text-xs bg-slate-50 p-3 rounded-xl border border-slate-200 text-slate-700 italic">-</p>
+        </div>
+
+        <!-- 6. Payment & Financial Total Breakdown -->
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+          <div class="space-y-1 text-xs text-slate-600">
+            <div>Base Accommodation: <span id="vBaseAmount" class="font-bold text-slate-800">₹0</span></div>
+            <div id="vExtraGuestsRow" class="hidden">Extra Guests Charge: <span id="vExtraAmount" class="font-bold text-slate-800">₹0</span></div>
+            <div>Package Inclusions: <span id="vPkgAmount" class="font-bold text-slate-800">₹0</span></div>
+            <div id="vAddonsTotalRow" class="hidden">Add-ons Total: <span id="vAddonsTotal" class="font-bold text-slate-800">₹0</span></div>
+            <div>Subtotal: <span id="vSubtotal" class="font-bold text-slate-800">₹0</span></div>
+            <div>Taxes & GST (12%): <span id="vTaxAmount" class="font-bold text-slate-800">₹0</span></div>
+            <div class="pt-2 mt-2 border-t border-slate-200 text-[11px]">
+              Payment Method: <span id="vPayMethod" class="font-bold text-slate-800">DEMO_UPI</span> | 
+              Txn ID: <span id="vTxnId" class="font-mono text-slate-700 font-semibold">CSR-TXN-0000</span>
+            </div>
+          </div>
+
+          <div class="text-right sm:border-l sm:border-slate-200 sm:pl-8">
+            <span class="text-xs uppercase font-extrabold tracking-wider text-slate-400 block">Total Amount Paid</span>
+            <span id="vTotalAmount" class="text-3xl font-black text-teal-800">₹0</span>
+            <span id="vPaidStatusBadge" class="inline-block text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full mt-1">Paid Online & Confirmed</span>
+          </div>
+        </div>
+
+        <!-- 7. Camp Location & Important Check-in Instructions -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs text-slate-600 pt-4">
+          <div class="p-4 rounded-xl border border-slate-200">
+            <h5 class="font-bold text-slate-800 mb-1">📍 Camp Location & Coordinates</h5>
+            <p>Camp Sandrush Beachfront Grounds, Silver Sands Highway, Alibaug / Coastal Bay. Landmark: 500m past North Light Station.</p>
+            <p class="mt-2 text-teal-700 font-semibold">Front Desk Assistance: +91 98765 00123</p>
+          </div>
+          <div class="p-4 rounded-xl border border-slate-200">
+            <h5 class="font-bold text-slate-800 mb-1">📋 What to Bring at Check-in</h5>
+            <p>Please carry a valid government photo ID for each adult guest and mention your booking reference <strong><span class="voucher-ref-text"></span></strong> at the welcome desk.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="mt-auto bg-night-900 text-slate-400 py-6 text-center text-xs no-print">
+    © 2026 Camp Sandrush Luxury Coastal Camping & Glamping Resort.
+  </footer>
+
+  <script>
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      }).format(amount || 0);
+    }
+
+    function formatDisplayDate(dateStr) {
+      if (!dateStr) return '';
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      return dt.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+
+      if (!ref) {
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorMessage').textContent = 'No booking reference provided in the URL.';
+        return;
+      }
+
+      const manageUrl = `/my-booking.html?ref=${encodeURIComponent(ref)}`;
+      document.getElementById('navManageLink').href = manageUrl;
+      document.getElementById('barManageLink').href = manageUrl;
+
+      try {
+        const res = await fetch(`/api/bookings/${encodeURIComponent(ref)}`);
+        const json = await res.json();
+
+        if (json.success && json.data) {
+          renderVoucher(json.data);
+        } else {
+          document.getElementById('loadingState').classList.add('hidden');
+          document.getElementById('errorState').classList.remove('hidden');
+          document.getElementById('errorMessage').textContent = json.error || 'Booking reference not found.';
+        }
+      } catch (err) {
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorMessage').textContent = 'Network error fetching booking voucher. Please try again.';
+      }
+    });
+
+    function renderVoucher(b) {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('voucherContent').classList.remove('hidden');
+
+      document.getElementById('bookingRefBadge').textContent = b.booking_reference;
+      document.querySelectorAll('.voucher-ref-text').forEach(el => el.textContent = b.booking_reference);
+
+      // Status check
+      if (b.booking_status === 'CANCELLED') {
+        const banner = document.getElementById('topBanner');
+        banner.className = 'bg-gradient-to-r from-rose-800 via-rose-900 to-slate-900 text-white p-8 sm:p-10 relative overflow-hidden';
+        document.getElementById('bannerStatusPill').className = 'inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold border border-rose-400/30 mb-3';
+        document.getElementById('bannerStatusDot').className = 'w-2 h-2 rounded-full bg-rose-400';
+        document.getElementById('bannerStatusText').textContent = 'RESERVATION CANCELLED';
+        document.getElementById('bannerTitle').textContent = 'This Stay Has Been Cancelled';
+        document.getElementById('bannerSubtitle').textContent = 'Your reserved accommodation unit has been released back into camp inventory.';
+
+        // Cancelled section
+        const cNotice = document.getElementById('vCancelledNotice');
+        cNotice.classList.remove('hidden');
+        document.getElementById('vRefundAmtDisplay').textContent = formatCurrency(b.refund_amount || 0);
+        document.getElementById('vRefundPctDisplay').textContent = `(${b.refund_percentage || 0}% refund applied)`;
+        document.getElementById('vRefundStatusDisplay').textContent = b.refund_status || 'NOT_APPLICABLE';
+        document.getElementById('vCancelReasonDisplay').textContent = `Cancellation Reason: ${b.cancellation_reason || 'Guest requested cancellation'}`;
+        document.getElementById('vPaidStatusBadge').className = 'inline-block text-[11px] bg-rose-100 text-rose-800 font-bold px-2.5 py-0.5 rounded-full mt-1';
+        document.getElementById('vPaidStatusBadge').textContent = 'Reservation Cancelled';
+      }
+
+      document.getElementById('vGuestName').textContent = b.customer_name;
+      document.getElementById('vGuestEmail').textContent = b.customer_email;
+      document.getElementById('vGuestPhone').textContent = b.customer_phone;
+      document.getElementById('vGuestCity').textContent = b.customer_city || 'Not specified';
+
+      document.getElementById('vCheckInDate').textContent = formatDisplayDate(b.check_in_date);
+      document.getElementById('vCheckOutDate').textContent = formatDisplayDate(b.check_out_date);
+      document.getElementById('vTotalNights').textContent = `${b.total_nights} Night${b.total_nights > 1 ? 's' : ''}`;
+      document.getElementById('vGuestsCount').textContent = `${b.num_adults} Adults${b.num_children > 0 ? `, ${b.num_children} Children` : ''}`;
+
+      document.getElementById('vAccName').textContent = b.accommodation_name;
+      document.getElementById('vStayType').textContent = b.stay_type_summary;
+
+      document.getElementById('vPkgName').textContent = b.package_name;
+      document.getElementById('vPkgBadge').textContent = b.package_badge || 'Included';
+
+      // Night rows
+      const tbody = document.getElementById('vNightRows');
+      const nights = b.night_breakdown || [];
+      tbody.innerHTML = nights.map(n => {
+        let badgeColor = 'bg-emerald-100 text-emerald-800';
+        if (n.type === 'weekend') badgeColor = 'bg-blue-100 text-blue-800';
+        if (n.type === 'special_event') badgeColor = 'bg-amber-100 text-amber-900 font-bold';
+
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3 font-medium">${formatDisplayDate(n.date)}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] ${badgeColor}">${n.badgeText || n.type}</span></td>
+            <td class="p-3 text-slate-500">${n.eventName ? `Event: ${n.eventName}` : (n.type === 'weekend' ? 'Weekend Prime' : 'Standard Weekday')}</td>
+            <td class="p-3 text-right font-bold text-slate-800">${formatCurrency(n.rate)}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Add-ons
+      if (b.add_ons && b.add_ons.length > 0) {
+        document.getElementById('vAddonsSection').classList.remove('hidden');
+        document.getElementById('vAddonsList').innerHTML = b.add_ons.map(ao => `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+            <div>
+              <span class="font-bold text-slate-800">${ao.name}</span>
+              <span class="text-slate-500 ml-2">Qty: ${ao.quantity}</span>
+            </div>
+            <span class="font-bold text-slate-900">${formatCurrency(ao.total_price)}</span>
+          </div>
+        `).join('');
+      }
+
+      // Special Requests
+      if (b.special_requests) {
+        document.getElementById('vSpecialReqSection').classList.remove('hidden');
+        document.getElementById('vSpecialRequests').textContent = b.special_requests;
+      }
+
+      // Financials
+      document.getElementById('vBaseAmount').textContent = formatCurrency(b.base_accommodation_amount);
+      if (b.extra_guests_amount > 0) {
+        document.getElementById('vExtraGuestsRow').classList.remove('hidden');
+        document.getElementById('vExtraAmount').textContent = formatCurrency(b.extra_guests_amount);
+      }
+      document.getElementById('vPkgAmount').textContent = b.package_amount === 0 ? 'Included' : formatCurrency(b.package_amount);
+      if (b.add_ons_amount > 0) {
+        document.getElementById('vAddonsTotalRow').classList.remove('hidden');
+        document.getElementById('vAddonsTotal').textContent = formatCurrency(b.add_ons_amount);
+      }
+      document.getElementById('vSubtotal').textContent = formatCurrency(b.subtotal);
+      document.getElementById('vTaxAmount').textContent = formatCurrency(b.tax_amount);
+      document.getElementById('vTotalAmount').textContent = formatCurrency(b.total_amount);
+
+      document.getElementById('vPayMethod').textContent = b.payment_method || 'DEMO_UPI';
+      document.getElementById('vTxnId').textContent = b.transaction_id || 'CSR-TXN-DEMO';
+    }
+  </script>
+</body>
+</html>

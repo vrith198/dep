@@ -1,0 +1,19 @@
+{
+  "name": "camp-sandrush",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/pricing.test.js && node test/availability_and_booking.test.js && node test/e2e_api.test.js && node test/admin.test.js && node test/cancellation_finance.test.js",
+    "seed": "node db.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
