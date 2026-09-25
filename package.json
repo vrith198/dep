@@ -2,11 +2,14 @@
   "name": "camp-sandrush",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "node test/pricing.test.js && node test/availability_and_booking.test.js && node test/e2e_api.test.js && node test/admin.test.js && node test/cancellation_finance.test.js",
     "seed": "node db.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
   },
   "keywords": [],
   "author": "",
